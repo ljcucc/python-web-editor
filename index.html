@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Python site</title>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+  <script src="./index.js"></script>
+  <script>
+  </script>
+
+  <style>
+    textarea{
+      padding: 16px;
+      font-size: 16px;
+      font-family: monospace;
+      min-height: 50vh;
+      min-width: 80vw;
+      outline: none;
+    }
+
+    .error{
+      color:#ff2222;
+      font-size: 16px;
+      font-family: monospace;
+      padding: 16px;
+    }
+
+    .console{
+      font-size: 16px;
+      font-family: monospace;
+      padding: 16px;
+    }
+
+    .run{
+      background: white;
+      border-radius: 8px;
+      font-size: 16px;
+      border: 1px solid black;
+      padding: 16px;
+    }
+
+    body{
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <p>
+    <button class="run">Run</button>
+  </p>
+  <textarea>print("hello world")</textarea>
+  <div class="console"></div>
+  <div class="error"></div>
+</body>
+</html>
