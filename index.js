@@ -5,6 +5,8 @@
     return doc.body;
   };
 
+  let editor;
+
   class RuntimeBinding{
     console = {
       log: this.log,
@@ -15,14 +17,21 @@
     clear(){
       const console = document.querySelector(".console");
       console.innerHTML = "";
+
+      const error = document.querySelector(".error");
+      error.innerHTML = "";
     }
 
     log(msg){
       nativeCLog(msg);
       const console = document.querySelector(".console");
+
       msg += "\n";
       msg = msg.replace("\n", "<br>");
       console.innerHTML += msg;
+
+      const consolePanel = document.querySelector("#consolePanel");
+      consolePanel.scrollTop = consolePanel.scrollHeight;
     }
 
     error(msg){
@@ -30,6 +39,9 @@
       msg += "\n";
       msg = msg.replace("\n", "<br>");
       console.innerHTML += msg;
+
+      const consolePanel = document.querySelector("#consolePanel");
+      consolePanel.scrollTop = consolePanel.scrollHeight;
     }
   }
 
@@ -39,7 +51,8 @@
   window.console.log = rb.console.log;
 
   async function main() {
-    const textarea = document.querySelector("textarea");
+    const textarea = document.querySelector("#editor");
+    editor = textarea;
 
     const error = document.querySelector(".error");
 
@@ -80,6 +93,25 @@
     rb.console.log("...");
   }
 
-
   window.addEventListener("load", main);
+
+  (()=>{
+    let butOpenFile;
+    let fileHandle;
+
+    window.addEventListener("load", e=>{
+      butOpenFile = document.querySelector(".button.open");
+      butOpenFile.addEventListener('click', async () => {
+        // Destructure the one-element array.
+        [fileHandle] = await window.showOpenFilePicker();
+        // Do something with the file handle.
+        const file = await fileHandle.getFile();
+        const contents = await file.text();
+
+        editor.value = contents;
+
+      });
+    });
+  })();
+
 })();

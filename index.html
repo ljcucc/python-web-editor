@@ -4,19 +4,35 @@
   <meta charset="UTF-8">
   <title>Python site</title>
 
+  <script type="module" src="https://cdn.jsdelivr.net/gh/vanillawc/wc-codemirror@1/index.js"></script>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/gh/vanillawc/wc-codemirror@1/mode/python/python.js"></script>
   <script src="./index.js"></script>
   <script>
   </script>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Mono&display=swap');
+
     textarea{
-      padding: 16px;
       font-size: 16px;
       font-family: monospace;
       min-height: 50vh;
       min-width: 80vw;
       outline: none;
+    }
+
+    #editor{
+      padding: 16px;
+      font-size: 16px;
+      font-family: 'Roboto Mono', monospace;
+      min-height: 50vh;
+      min-width: 80vw;
+      outline: none;
+    }
+
+    .CodeMirror, .CodeMirror-lines{
+      font-family: 'Roboto Mono', monospace;
     }
 
     .error{
@@ -38,9 +54,36 @@
       font-size: 16px;
       border: 1px solid black;
       padding: 16px;
+      outline: none;
+    }
+    
+    input{
+      background: white;
+      border-radius: 8px;
+      font-size: 16px;
+      border: 1px solid black;
+      padding: 16px;
+      outline: none;
+      font-family:monospace;
     }
 
-    .clear{
+    #editorPanel{
+      flex: 1;
+      overflow-y:scroll;
+      width: 100%;
+    }
+
+    #consolePanel{
+      height: 20vh;
+      width: 100%;
+      overflow-y:scroll;
+    }
+
+    .panels{
+      display: flex;
+      height: calc( 100vh - 150px );
+      flex-direction: column;
+      gap: 16px;
     }
 
     body{
@@ -49,12 +92,27 @@
   </style>
 </head>
 <body>
-  <p>
+  <!--<textarea>print("hello world")</textarea>-->
+    <p>
+    <!-- <button class="button open">Open</button> -->
+    <!-- <button class="button save">Save</button> -->
     <button class="button run">Run</button>
     <button class="button clear">Clear</button>
-  </p>
-  <textarea>print("hello world")</textarea>
-  <div class="console"></div>
-  <div class="error"></div>
+    <!--<input type="text" placeholder="untitle.py"/>-->
+    </p>
+  <div class="panels">
+    <div id="editorPanel">
+      <wc-codemirror id="editor" mode="python">
+        <script type="wc-content">
+          print("hello")
+        </script>
+      </wc-codemirror>
+    </div>
+    <div id="consolePanel">
+      <div class="console"></div>
+      <div class="error"></div>
+    </div>
+  </div>
+
 </body>
 </html>
