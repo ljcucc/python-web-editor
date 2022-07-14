@@ -7,12 +7,26 @@
 
   class RuntimeBinding{
     console = {
-      log: this.log
+      log: this.log,
+      error: this.error,
+      clear: this.clear
     };
+
+    clear(){
+      const console = document.querySelector(".console");
+      console.innerHTML = "";
+    }
 
     log(msg){
       nativeCLog(msg);
       const console = document.querySelector(".console");
+      msg += "\n";
+      msg = msg.replace("\n", "<br>");
+      console.innerHTML += msg;
+    }
+
+    error(msg){
+      const console = document.querySelector(".error");
       msg += "\n";
       msg = msg.replace("\n", "<br>");
       console.innerHTML += msg;
@@ -26,17 +40,23 @@
 
   async function main() {
     const textarea = document.querySelector("textarea");
+
     const error = document.querySelector(".error");
+
     const run = document.querySelector(".run");
+    const clearBtn = document.querySelector(".button.clear");
 
     let pyodide = await loadPyodide.bind(rb)({
       indexURL : "https://cdn.jsdelivr.net/pyodide/v0.20.0/full/"
     });
 
-    pyodide.loadPackage("scikit-learn", e=>{
-      rb.console.log(e);
-    },e=>{
-      rb.console.error(e);
+    ["scikit-learn", "micropip"].forEach(item=>{
+      rb.console.log(`importing ${item}\n`);
+      pyodide.loadPackage(item, e=>{
+        rb.console.log(e);
+      },e=>{
+        rb.console.error(e);
+      });
     });
 
     run.addEventListener("click", e=>{
@@ -45,10 +65,19 @@
       try{
         let msg = pyodide.runPython(textarea.value);
       }catch(e){
-        error.innerHTML = error;
+        rb.console.error(e);
       }
     });
 
+    clearBtn.addEventListener("click", e=>{
+      clearConsole();
+    });
+
+  }
+
+  function clearConsole(){
+    rb.console.clear();
+    rb.console.log("...");
   }
 
 
