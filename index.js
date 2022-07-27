@@ -95,7 +95,7 @@
 
   window.addEventListener("load", main);
 
-  (()=>{
+  /* (()=>{
     let butOpenFile;
     let fileHandle;
 
@@ -112,6 +112,6 @@
 
       });
     });
-  })();
+  }); */
 
 })();
